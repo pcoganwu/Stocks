@@ -2,9 +2,11 @@
 
 namespace Stocks.Application.Interfaces
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
        IGenericRepository<Account> Accounts { get; }
        IGenericRepository<AssetTransaction> AssetTransactions { get; }
+
+        Task SaveAsync();
     }
 }
