@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Stocks.WEB.Client.Pages;
+using Stocks.Infrastructre.Data;
 using Stocks.WEB.Components;
 using Stocks.WEB.Components.Account;
-using Stocks.WEB.Data;
 
 namespace Stocks.WEB
 {
