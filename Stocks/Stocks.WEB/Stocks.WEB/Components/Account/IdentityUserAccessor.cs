@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using Stocks.Infrastructre.Data;
+using Stocks.Domain.Models;
 
 namespace Stocks.WEB.Components.Account
 {
