@@ -5,6 +5,10 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.Domain", "Stocks.Domain\Stocks.Domain.csproj", "{4A68CC2C-0E04-4F6C-B322-9140E68E4EBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Infrastructure", "Stocks.Infrastructure\Stocks.Infrastructure.csproj", "{880A132F-8F16-4A40-A532-1AEF0516B3BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Application", "Stocks.Application\Stocks.Application.csproj", "{75601606-9B65-4C39-8A5A-805408D3666C}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.WEB", "Stocks.WEB\Stocks.WEB\Stocks.WEB.csproj", "{9C32E0D9-B686-41DA-BFFB-B4E1A3BF81B1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.WEB.Client", "Stocks.WEB\Stocks.WEB.Client\Stocks.WEB.Client.csproj", "{4321FBAD-C31F-4786-9317-532504D9EA5B}"
@@ -19,6 +23,14 @@ Global
 		{4A68CC2C-0E04-4F6C-B322-9140E68E4EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A68CC2C-0E04-4F6C-B322-9140E68E4EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A68CC2C-0E04-4F6C-B322-9140E68E4EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{880A132F-8F16-4A40-A532-1AEF0516B3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{880A132F-8F16-4A40-A532-1AEF0516B3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{880A132F-8F16-4A40-A532-1AEF0516B3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{880A132F-8F16-4A40-A532-1AEF0516B3BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75601606-9B65-4C39-8A5A-805408D3666C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75601606-9B65-4C39-8A5A-805408D3666C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75601606-9B65-4C39-8A5A-805408D3666C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75601606-9B65-4C39-8A5A-805408D3666C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9C32E0D9-B686-41DA-BFFB-B4E1A3BF81B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9C32E0D9-B686-41DA-BFFB-B4E1A3BF81B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C32E0D9-B686-41DA-BFFB-B4E1A3BF81B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
