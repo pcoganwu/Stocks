@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stocks.Domain.Models;
 using Stocks.Infrastructre.Data;
 using Stocks.WEB.Components;
 using Stocks.WEB.Components.Account;

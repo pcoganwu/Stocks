@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Stocks.Domain.Models;
 using Stocks.Infrastructre.Data;
 using Stocks.WEB.Client;
 using System.Diagnostics;
