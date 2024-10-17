@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Stocks.Infrastructre.Data;
 using Stocks.WEB.Components.Account.Pages;
 using Stocks.WEB.Components.Account.Pages.Manage;
-using Stocks.WEB.Data;
 using System.Security.Claims;
 using System.Text.Json;
 

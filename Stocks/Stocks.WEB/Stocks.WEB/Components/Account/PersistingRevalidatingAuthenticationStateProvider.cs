@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Stocks.Infrastructre.Data;
 using Stocks.WEB.Client;
-using Stocks.WEB.Data;
 using System.Diagnostics;
 using System.Security.Claims;
 
