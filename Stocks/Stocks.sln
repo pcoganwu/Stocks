@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Domain", "Stocks.Domain\Stocks.Domain.csproj", "{4A68CC2C-0E04-4F6C-B322-9140E68E4EBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.Domain", "Stocks.Domain\Stocks.Domain.csproj", "{4A68CC2C-0E04-4F6C-B322-9140E68E4EBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.WEB", "Stocks.WEB\Stocks.WEB\Stocks.WEB.csproj", "{9C32E0D9-B686-41DA-BFFB-B4E1A3BF81B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.WEB", "Stocks.WEB\Stocks.WEB\Stocks.WEB.csproj", "{9C32E0D9-B686-41DA-BFFB-B4E1A3BF81B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.WEB.Client", "Stocks.WEB\Stocks.WEB.Client\Stocks.WEB.Client.csproj", "{4321FBAD-C31F-4786-9317-532504D9EA5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.WEB.Client", "Stocks.WEB\Stocks.WEB.Client\Stocks.WEB.Client.csproj", "{4321FBAD-C31F-4786-9317-532504D9EA5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
