@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Stocks.WEB.Data;
+using Stocks.Infrastructure.Data;
 
 namespace Stocks.WEB.Components.Account
 {

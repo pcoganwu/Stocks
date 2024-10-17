@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Stocks.WEB.Data
+namespace Stocks.Infrastructure.Data
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
