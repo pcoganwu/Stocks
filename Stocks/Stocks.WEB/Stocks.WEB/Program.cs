@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Stocks.Application.Interfaces;
 using Stocks.Domain.Models;
 using Stocks.Infrastructre.Data;
+using Stocks.Infrastructure.Services;
 using Stocks.WEB.Components;
 using Stocks.WEB.Components.Account;
 
@@ -42,6 +45,9 @@ namespace Stocks.WEB
                 .AddDefaultTokenProviders();
 
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+            builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection("ApplicationSettings"));
+            builder.Services.AddSingleton<IApplicationSettings>(sp => sp.GetRequiredService<IOptions<ApplicationSettings>>().Value);
 
             var app = builder.Build();
 
