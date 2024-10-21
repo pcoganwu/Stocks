@@ -9,6 +9,6 @@ namespace Stocks.Application.Interfaces
     public interface IApplicationSettings
     {
         string ApiKey { get; set; }
-        string Uri { get; set; }
+        string Url { get; set; }
     }
 }

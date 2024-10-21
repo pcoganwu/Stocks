@@ -35,7 +35,7 @@ namespace Stocks.WEB
                 .AddIdentityCookies();
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -44,7 +44,17 @@ namespace Stocks.WEB
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
 
+
+            builder.Services.AddHttpClient("StocksApi", client =>
+            {
+                var apiUrl = builder.Configuration["ApplicationSettings:ApiUrl"] ??   throw new InvalidOperationException("API URL is not configured.");
+                client.BaseAddress = new Uri(apiUrl);
+            });
+
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+            builder.Services.AddSingleton<IStockStateService, StockStateService>();
+            builder.Services.AddSingleton<IStocksService, StocksService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection("ApplicationSettings"));
             builder.Services.AddSingleton<IApplicationSettings>(sp => sp.GetRequiredService<IOptions<ApplicationSettings>>().Value);

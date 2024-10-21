@@ -172,7 +172,7 @@ namespace StocksInfrastructre.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("Stocks.Domain.Models.ApplicationUser", b =>
@@ -265,7 +265,7 @@ namespace StocksInfrastructre.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("AssetTransactions");
+                    b.ToTable("AssetTransactions", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -338,7 +338,7 @@ namespace StocksInfrastructre.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Stocks.Domain.Models.Asset", "Asset", b1 =>
+                    b.OwnsOne("Stocks.Domain.Models.AssetTransaction.Asset#Stocks.Domain.Models.Asset", "Asset", b1 =>
                         {
                             b1.Property<Guid>("AssetTransactionId")
                                 .HasColumnType("uniqueidentifier");
@@ -355,7 +355,7 @@ namespace StocksInfrastructre.Migrations
 
                             b1.HasKey("AssetTransactionId");
 
-                            b1.ToTable("AssetTransactions");
+                            b1.ToTable("AssetTransactions", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AssetTransactionId");

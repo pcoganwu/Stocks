@@ -1,0 +1,44 @@
+﻿@using global::Stocks.Domain.Models
+
+
+@if (Stock != null)
+{
+    <div class="card m-2 border" style="width: 18rem;">
+        <div class="card-header bg-success">
+            <h5 class="card-title text-center text-white">@Stock.Name</h5>
+        </div>
+        <div class="card-body">
+            <h6>Exchange: @Stock.ExchangeShortName</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Symbol: @Stock.Symbol</h6>
+            <p class="card-text">Price: @Stock.Price?.ToString("c")</p>
+        </div>
+        <div class="card-footer text-center text-white">
+            <a href="@($"/BuyStock/{Stock.Symbol}")" class="btn btn-success">BUY</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card m-2 border" style="width: 18rem;">
+        <div class="card-header bg-success">
+            <h5 class="card-title text-center text-white placeholder-glow"></h5>
+        </div>
+        <div class="card-body">
+            <h6 placeholder-glow><span class="placeholder"></span></h6>
+            <h6 placeholder-glow><span class="placeholder"></span></h6>
+            <p class="card-text placeholder-glow"><span class="placeholder"></span></p>
+        </div>
+        <div class="card-footer text-center text-white">
+            <a href="#" class="btn btn-success disabled placeholder">BUY</a>
+        </div>
+    </div>
+}
+
+
+
+@code {
+
+    [Parameter]
+    public Stock Stock { get; set; } = new Stock();
+
+}

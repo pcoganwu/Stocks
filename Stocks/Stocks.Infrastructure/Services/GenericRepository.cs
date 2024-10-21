@@ -8,23 +8,24 @@ namespace Stocks.Infrastructure.Services
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly ApplicationDbContext _context;
-        private DbSet<T> _dbSet;
+        private readonly DbSet<T> _dbSet;
 
         public GenericRepository(ApplicationDbContext context)
         {
-            _context=context;
+            _context = context;
             _dbSet = _context.Set<T>();
         }
 
         public async Task<T> AddEntity(T entity)
         {
             var newEntity = await _dbSet.AddAsync(entity);
+            //await _context.SaveChangesAsync();
             return newEntity.Entity;
         }
 
         public async Task<T?> DeleteEntity(Expression<Func<T, bool>>? expression = null)
         {
-           IQueryable<T> query = _dbSet;
+            IQueryable<T> query = _dbSet;
 
             if (expression != null)
             {
@@ -33,10 +34,10 @@ namespace Stocks.Infrastructure.Services
 
             var entity = await query.AsNoTracking().FirstOrDefaultAsync();
 
-            if ( entity != null)
+            if (entity != null)
             {
                 _dbSet.Remove(entity);
-
+                //await _context.SaveChangesAsync();
                 return entity;
             }
 
@@ -88,12 +89,12 @@ namespace Stocks.Infrastructure.Services
             return await query.AsNoTracking().FirstOrDefaultAsync();
         }
 
-        public Task<T> UpdateEntity(T entity)
+        public async Task<T> UpdateEntity(T entity)
         {
             _dbSet.Attach(entity);
-            _dbSet.Entry(entity).State = EntityState.Modified;
-
-            return Task.FromResult(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            //await _context.SaveChangesAsync();
+            return entity;
         }
     }
 }
