@@ -1,0 +1,214 @@
+﻿@page "/BuyStock/{symbol}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Stocks.Application.Interfaces
+@using System.ComponentModel.DataAnnotations
+@using Stocks.Infrastructure.Exceptions
+
+<PageTitle>Buy Stock</PageTitle>
+
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IUnitOfWork UnitOfWork
+@inject UserManager<ApplicationUser> UserManager
+
+@rendermode InteractiveServer
+
+<div class="d-flex justify-content-center">
+    <div class="col-md-6">
+        <EditForm Model="@Shares" OnValidSubmit="BuyShares" FormName="SharesForm">
+            <DataAnnotationsValidator />
+            @if (!string.IsNullOrEmpty(statusMessage))
+            {
+                string alertType = statusMessage.StartsWith('E') ? "danger" : "success";
+                <div class="alert alert-@alertType">
+                    @if (alertType == "danger")
+                    {
+                        <small>
+                        <p class="mb-2">@statusMessage</p>
+                          Please use the link <a href="@($"/StockTrading/EditAccount/{Account.Id}")">to add funds to your account.</a>
+                        </small>
+                    }
+                    else
+                    {
+                    <small>@statusMessage</small>
+                    }
+                </div>
+            }
+
+            <div class="card p-2">
+                <div class="card-header bg-success text-white text-center">
+                    <h4>Name - @StockDetails.Name Symbol</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row border-bottom mb-2">
+                        <p class="lead text-muted text-center">@StockDetails.Symbol</p>
+                        <div class="col">
+                            <p>Price: @StockDetails.Price</p>
+                        </div>
+                        <div class="col">
+                            <p>Exchange: @StockDetails.Exchange</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>Day Low: @StockDetails.DayLow</p>
+                        </div>
+                        <div class="col">
+                            <p>Day High: @StockDetails.DayHigh</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>Year Low: @StockDetails.YearLow</p>
+                        </div>
+                        <div class="col">
+                            <p>Year High: @StockDetails.YearHigh</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>Earnings Per share: @StockDetails.Eps</p>
+                        </div>
+                        <div class="col">
+                            <p>Price to Earning Ratio: @StockDetails.Pe</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>Change: @StockDetails.Change</p>
+                        </div>
+                        <div class="col">
+                            <p>Changes Percentage: @StockDetails.ChangesPercentage</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>50-Days Moving Average: @StockDetails.PriceAvg50</p>
+                        </div>
+                        <div class="col">
+                            <p>200-Days Moving Average: @StockDetails.PriceAvg200</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>Volume: @StockDetails.Volume</p>
+                        </div>
+                        <div class="col">
+                            <p>Average Volume: @StockDetails.AvgVolume</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>Open: @StockDetails.Open</p>
+                        </div>
+                        <div class="col">
+                            <p>Previous Close: @StockDetails.PreviousClose</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>Earnings Announcement: @StockDetails.EarningsAnnouncement</p>
+                        </div>
+                        <div class="col">
+                            <p>Shares Outstanding: @StockDetails.SharesOutstanding</p>
+                        </div>
+                    </div>
+                    <div class="row border-bottom mb-2">
+                        <div class="col">
+                            <p>Time Stamp: @StockDetails.Timestamp</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-md-4">Number of Shares</label>
+                        <div class="col-md-6">
+                            <InputNumber @bind-Value="StockDetails.Price" hidden />
+                            <InputNumber @bind-Value="Shares.NumberOfShares" class="form-control" />
+                            <ValidationMessage For="@(() => Shares.NumberOfShares)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card footer">
+                    <button type="submit" class="btn btn-success">Buy Shares</button>
+                </div>
+
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public string Symbol { get; set; } = string.Empty;
+
+    [Inject]
+    public IStocksService StockService { get; set; }
+
+    public StockDetails StockDetails { get; set; } = new();
+
+    public Account Account { get; set; } = new();
+
+    [SupplyParameterFromForm]
+    public ShareNumber Shares { get; set; } = new();
+
+    private string statusMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        StockDetails = await StockService.GetStockDetailsAsync(Symbol);
+
+        StockDetails.EarningsAnnouncement = StockDetails.EarningsAnnouncement != null ?
+        DateTime.Parse(StockDetails.EarningsAnnouncement).ToShortDateString() : null;
+    }
+
+    private async Task BuyShares()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var authUser = authState.User;
+
+        ApplicationUser? applicationUser = await UserManager.FindByEmailAsync(authUser.Identity!.Name!);
+
+        if (applicationUser != null)
+        {
+            Account = await UnitOfWork.Accounts.GetEntityAsync(x =>
+                x.ApplicationUserId == applicationUser.Id, ["AccountHolder", "AssetTransactions"]);
+
+            if (Account != null)
+            {
+                decimal? transactionAmount = Shares.NumberOfShares * StockDetails.Price;
+
+                if (Account.Balance < transactionAmount)
+                {
+                    statusMessage = "Error: Insufficient Funds.";
+                    return;
+                }
+
+                AssetTransaction transaction = new AssetTransaction
+                {
+                    AccountId = Account.Id,
+                    Account = Account,
+                    IsPurchase = true,
+                    Asset = new Asset
+                    {
+                        Symbol = StockDetails.Symbol,
+                        PricePerShare = (decimal)StockDetails.Price,
+                    },
+                    Shares = Shares.NumberOfShares,
+                    DateProcessed = DateTime.Now
+                };
+
+                Account.AssetTransactions?.Add(transaction);
+
+                Account.Balance -= transactionAmount!.Value;
+
+                await UnitOfWork.Accounts.UpdateEntity(Account);
+                await UnitOfWork.SaveAsync();
+                statusMessage = $"You successfully purchased {transaction.Asset.Symbol} for a total amount of {transactionAmount?.ToString("c")}";
+            }
+           
+        }
+    }
+
+}

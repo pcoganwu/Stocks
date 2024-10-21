@@ -1,7 +1,70 @@
 ﻿@page "/"
+@using Stocks.Application.Interfaces
+@using Stocks.Domain.Models
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@attribute [StreamRendering]
+@rendermode InteractiveServer
 
-Welcome to your new app.
+<h1 class="text-center text-success">List of Stocks</h1>
+
+<div class="d-flex flex-column flex-md-row justify-content-center my-3">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 d-flex justify-content-center justify-content-md-start">
+        @if (StockStateService.Stocks != null && StockStateService.Stocks.Any())
+        {
+            <div class="w-100 d-flex justify-content-center mb-3">
+                <Paginator CurrentPage="@CurrentPage" TotalPages="totalPages" OnPageChange="GetPage" />
+            </div>
+            @foreach (var stock in StockList)
+            {
+                <StockCard Stock="stock" />
+            }
+            <div class="w-100 d-flex justify-content-center mt-3">
+                <Paginator CurrentPage="@CurrentPage" TotalPages="totalPages" OnPageChange="GetPage" />
+            </div>
+        }
+        else
+        {
+            for(int i = 0; i < 30; i++)
+            {
+                <StockCard />
+            }
+        }
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    public required IStocksService StocksService { get; set; }
+
+    [Inject]
+    public required IStockStateService StockStateService { get; set; }
+
+    public IList<Stock> StockList { get; set; } = [];
+    public int CurrentPage { get; set; } = 1;
+    private bool isInitialized = false;
+
+    private int startIndex = 0;
+    private int count = 28;
+   private int totalPages = 0;
+
+    override protected async Task OnInitializedAsync()
+    {
+        if(!StockStateService.IsInitialized){
+            StockStateService.Stocks = await StocksService.GetStocksAsync();
+            StockStateService.IsInitialized = true;
+        }
+
+        totalPages = (int)Math.Ceiling((double)StockStateService.Stocks.Count / count);
+        StockList = StockStateService.Stocks.Skip(startIndex).Take(count).ToList();
+    }
+
+    private void GetPage(int pageNum)
+    {
+        CurrentPage = pageNum;
+        if (pageNum < 1) pageNum = 1;
+        StockList = StockStateService.Stocks.Skip((pageNum - 1) * count).Take(count).ToList();
+    }
+}

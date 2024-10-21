@@ -1,0 +1,72 @@
+﻿@page "/stocktrading/createstockaccount"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@using Stocks.Application.Interfaces
+@using Stocks.WEB.ViewModels
+
+<PageTitle>Create Stock Account</PageTitle>
+
+@attribute [Authorize]
+
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IUnitOfWork UnitOfWork
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
+
+<EditForm Model="AccountVM" OnValidSubmit="CreateAccount" FormName="StockAccount">
+    <DataAnnotationsValidator />
+    <div class="d-flex justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3>Create Stock Account</h3>
+                </div>
+                <div class="card-body mb-3">
+                    <div class="row">
+                        <label for="balance" class="col-md-4">Account Balance</label>
+                        <div class="col-md-6">
+                            <InputNumber id="balance" @bind-Value="AccountVM.Balance" class="form-control" />
+                            <ValidationMessage For="@(() => AccountVM.Balance)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-success">Create Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public CreateAccountViewModel AccountVM { get; set; } = new();
+
+
+    private async Task CreateAccount()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        ApplicationUser? applicationUser = await UserManager.FindByEmailAsync(user.Identity!.Name!);
+
+        if (applicationUser != null)
+        {
+            Account account = new()
+                {
+                    Balance = AccountVM.Balance,
+                    ApplicationUserId = applicationUser.Id
+                };
+
+            await UnitOfWork.Accounts.AddEntity(account);
+            await UnitOfWork.SaveAsync();   
+           
+
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}

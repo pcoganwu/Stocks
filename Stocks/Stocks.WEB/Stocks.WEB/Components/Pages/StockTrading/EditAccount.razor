@@ -1,0 +1,79 @@
+﻿@page "/StockTrading/EditAccount/{Id:guid}"
+@using Stocks.Application.Interfaces
+@using Stocks.WEB.ViewModels
+
+@inject IUnitOfWork UnitOfWork
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
+
+<EditForm Model="AccountVM" OnValidSubmit="UpdateAccount" FormName="StockAccount">
+    <DataAnnotationsValidator />
+
+    <div class="d-flex justify-content-center">
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(statusMessage))
+            {
+                string alertType = statusMessage.StartsWith('E') ? "danger" : "success";
+                <div class="alert alert-@alertType text-center">
+                    <small>@statusMessage</small>
+                </div>
+            }
+            <div class="card">
+                <div class="card-header bg-success text-white text-center">
+                    <h3>Add Money To Account</h3>
+                </div>
+                <div class="card-body mb-3">
+                    <div class="row">
+                        <label for="balance" class="col-md-3">Account Balance</label>
+                        <div class="col-md-6">
+                            <InputNumber id="balance" @bind-Value="AccountVM.Balance" class="form-control" />
+                            <ValidationMessage For="@(() => AccountVM.Balance)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-success">Add Money</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+
+@code {
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    [SupplyParameterFromForm]
+    public CreateAccountViewModel AccountVM { get; set; } = new();
+
+    public Account? Account { get; set; } = new();
+
+    private string statusMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Account = await UnitOfWork.Accounts.GetEntityAsync(x => x.Id == Id);
+
+        if (Account == null)
+        {
+            statusMessage = "Error: Account not found.";
+        }
+        else
+        {
+            AccountVM.Balance = Account.Balance;
+        }
+    }
+
+    private async Task UpdateAccount()
+    {
+        Account!.Balance = AccountVM.Balance;
+        await UnitOfWork.Accounts.UpdateEntity(Account);
+        await UnitOfWork.SaveAsync();
+
+        NavigationManager.NavigateTo("/");
+    }
+}

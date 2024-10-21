@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.WEB", "Stocks.WEB\St
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.WEB.Client", "Stocks.WEB\Stocks.WEB.Client\Stocks.WEB.Client.csproj", "{4321FBAD-C31F-4786-9317-532504D9EA5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Tests", "Stocks.Tests\Stocks.Tests.csproj", "{4881D271-B8E3-457C-BBBD-A53E888BC6ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.Tests", "Stocks.Tests\Stocks.Tests.csproj", "{4881D271-B8E3-457C-BBBD-A53E888BC6ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
